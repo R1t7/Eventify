@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Resultado da Validação - Eventify{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 600px; margin: 50px auto;">
+    <h2 style="color: var(--primary-color); margin-bottom: 1.5rem;">Resultado da Validação</h2>
+
+    {% if valido %}
+    <div class="alert alert-success">
+        ✓ Certificado válido!
+    </div>
+
+    <div style="margin-top: 2rem;">
+        <h3>Informações do Certificado</h3>
+        <div style="margin-top: 1rem;">
+            <p><strong>Participante:</strong> {{ certificado.inscricao.usuario.get_full_name }}</p>
+            <p><strong>Evento:</strong> {{ certificado.inscricao.evento.titulo }}</p>
+            <p><strong>Tipo:</strong> {{ certificado.inscricao.evento.get_tipo_display }}</p>
+            <p><strong>Data do Evento:</strong>
+                {{ certificado.inscricao.evento.data_inicio|date:"d/m/Y" }}
+                {% if certificado.inscricao.evento.data_fim and certificado.inscricao.evento.data_fim != certificado.inscricao.evento.data_inicio %}
+                - {{ certificado.inscricao.evento.data_fim|date:"d/m/Y" }}
+                {% endif %}
+            </p>
+            <p><strong>Data de Emissão:</strong> {{ certificado.data_emissao|date:"d/m/Y" }}</p>
+            <p><strong>Código de Validação:</strong> <code>{{ certificado.codigo_validacao }}</code></p>
+        </div>
+    </div>
+    {% else %}
+    <div class="alert alert-error">
+        ✗ {{ mensagem }}
+    </div>
+    {% endif %}
+
+    <div style="margin-top: 2rem;">
+        <a href="{% url 'meus_certificados' %}" class="btn btn-primary">Voltar</a>
+    </div>
+</div>
+{% endblock %}

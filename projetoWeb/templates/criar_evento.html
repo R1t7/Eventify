@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if evento %}Editar{% else %}Criar{% endif %} Evento - Eventify{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 800px; margin: 0 auto;">
+    <h2 style="color: var(--primary-color); margin-bottom: 1.5rem;">
+        {% if evento %}Editar Evento{% else %}Criar Novo Evento{% endif %}
+    </h2>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="id_tipo">Tipo de Evento</label>
+            {{ form.tipo }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_titulo">Título do Evento</label>
+            {{ form.titulo }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_descricao">Descrição</label>
+            {{ form.descricao }}
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+                <label for="id_data_inicio">Data de Início</label>
+                {{ form.data_inicio }}
+            </div>
+            <div class="form-group">
+                <label for="id_data_fim">Data de Término</label>
+                {{ form.data_fim }}
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+                <label for="id_horario">Horário</label>
+                {{ form.horario }}
+            </div>
+            <div class="form-group">
+                <label for="id_vagas">Número de Vagas</label>
+                {{ form.vagas }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="id_local">Local</label>
+            {{ form.local }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_professor_responsavel">Professor Responsável *</label>
+            {{ form.professor_responsavel }}
+            <small class="form-text text-muted">{{ form.professor_responsavel.help_text }}</small>
+        </div>
+
+        <div class="form-group">
+            <label for="id_banner">Banner do Evento</label>
+            {{ form.banner }}
+            <small class="form-text text-muted">{{ form.banner.help_text }}</small>
+            {% if evento and evento.banner %}
+                <div style="margin-top: 10px;">
+                    <p>Banner atual:</p>
+                    <img src="{{ evento.banner.url }}" alt="Banner" style="max-width: 200px; border-radius: 5px;">
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="id_status">Status</label>
+            {{ form.status }}
+        </div>
+
+        <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+            <button type="submit" class="btn btn-success">
+                {% if evento %}Atualizar{% else %}Criar{% endif %} Evento
+            </button>
+            <a href="{% url 'listar_eventos' %}" class="btn btn-outline">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Validar Certificado - Eventify{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1 style="color: var(--primary-color);">Validar Certificado</h1>
+    <p>Digite o código de validação que aparece no certificado para verificar sua autenticidade.</p>
+
+    <form method="post" style="max-width: 500px; margin-top: 2rem;">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="codigo">Código de Validação:</label>
+            <input
+                type="text"
+                id="codigo"
+                name="codigo"
+                class="form-control"
+                placeholder="Ex: 550e8400-e29b-41d4-a716-446655440000"
+                required
+                style="font-family: monospace;"
+                value=""
+            >
+            <small style="color: #666; display: block; margin-top: 0.5rem;">
+                O código está no rodapé do certificado PDF
+            </small>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="margin-top: 1rem;">
+            Validar Certificado
+        </button>
+    </form>
+
+    <div style="margin-top: 3rem; padding: 1.5rem; background: #f8f9fa; border-radius: 8px; border-left: 4px solid var(--primary-color);">
+        <h3 style="margin-top: 0; color: var(--primary-color);">ℹ️ Como funciona?</h3>
+        <ul style="margin: 1rem 0 0 1.5rem; line-height: 1.8;">
+            <li>Cada certificado possui um código único de validação</li>
+            <li>Este código aparece no rodapé do PDF do certificado</li>
+            <li>Digite o código acima para verificar a autenticidade</li>
+            <li>O sistema confirmará se o certificado é válido e mostrará os detalhes</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificado Disponível - Eventify</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        .logo {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        .content {
+            padding: 40px 30px;
+            color: #333333;
+            line-height: 1.6;
+        }
+        .certificate-icon {
+            text-align: center;
+            font-size: 80px;
+            margin: 20px 0;
+        }
+        .button {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 15px 40px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .footer {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #666666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">📚</div>
+            <h1 style="margin: 0;">Eventify</h1>
+            <p>Sistema de Gestão de Eventos Acadêmicos</p>
+        </div>
+
+        <div class="content">
+            <div class="certificate-icon">🎓</div>
+
+            <h2 style="text-align: center; color: #667eea;">Certificado Disponível!</h2>
+
+            <p>Olá, <strong>{{ nome_completo }}</strong>!</p>
+
+            <p>Seu certificado de participação no evento <strong>{{ evento.titulo }}</strong> já está disponível!</p>
+
+            <p><strong>Detalhes do Certificado:</strong></p>
+            <ul>
+                <li><strong>Evento:</strong> {{ evento.titulo }}</li>
+                <li><strong>Tipo:</strong> {{ evento.get_tipo_display }}</li>
+                <li><strong>Data:</strong> {{ evento.data_inicio|date:"d/m/Y" }} {% if evento.data_inicio != evento.data_fim %}a {{ evento.data_fim|date:"d/m/Y" }}{% endif %}</li>
+                <li><strong>Código de Validação:</strong> {{ certificado.codigo_validacao }}</li>
+            </ul>
+
+            <div style="text-align: center;">
+                <a href="{{ url_certificado }}" class="button">Baixar Certificado (PDF)</a>
+            </div>
+
+            <p>Você também pode acessar seus certificados a qualquer momento através do sistema.</p>
+
+            <p>Parabéns pela participação!</p>
+
+            <p>Atenciosamente,<br>
+            <strong>Equipe Eventify</strong></p>
+        </div>
+
+        <div class="footer">
+            <p>Este é um email automático, por favor não responda.</p>
+            <p>&copy; 2025 Eventify - Sistema de Gestão de Eventos Acadêmicos</p>
+        </div>
+    </div>
+</body>
+</html>

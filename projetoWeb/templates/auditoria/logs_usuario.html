@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}Logs do Usuário - Eventify{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+        <a href="{% url 'auditoria:listar_logs' %}" class="btn" style="background: #6c757d; color: white;">
+            ← Voltar
+        </a>
+        <h1 style="color: var(--primary-color); margin: 0;">
+            Logs do Usuário
+            {% if page_obj.object_list.first %}
+                - {{ page_obj.object_list.first.usuario.username }}
+            {% endif %}
+        </h1>
+    </div>
+
+    {% if page_obj.object_list.first %}
+    <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
+        <h3 style="margin: 0 0 1rem 0;">Informações do Usuário</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+            <div>
+                <strong>Nome:</strong> {{ page_obj.object_list.first.usuario.get_full_name }}
+            </div>
+            <div>
+                <strong>Email:</strong> {{ page_obj.object_list.first.usuario.email }}
+            </div>
+            <div>
+                <strong>Perfil:</strong> {{ page_obj.object_list.first.usuario.get_perfil_display }}
+            </div>
+            <div>
+                <strong>Total de Logs:</strong> {{ page_obj.paginator.count }}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Tabela de Logs -->
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Data/Hora</th>
+                    <th>Ação</th>
+                    <th>Descrição</th>
+                    <th>IP</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in page_obj %}
+                <tr>
+                    <td style="white-space: nowrap;">
+                        {{ log.data_hora|date:"d/m/Y H:i:s" }}
+                    </td>
+                    <td>
+                        <span style="display: inline-block; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.875rem; font-weight: 500;
+                            {% if log.acao == 'CRIAR_USUARIO' or log.acao == 'CRIAR_EVENTO' or log.acao == 'INSCRICAO_EVENTO' %}
+                                background: #d4edda; color: #155724;
+                            {% elif log.acao == 'EXCLUIR_EVENTO' %}
+                                background: #f8d7da; color: #721c24;
+                            {% elif log.acao == 'ALTERAR_EVENTO' %}
+                                background: #fff3cd; color: #856404;
+                            {% else %}
+                                background: #d1ecf1; color: #0c5460;
+                            {% endif %}
+                        ">
+                            {{ log.get_acao_display }}
+                        </span>
+                    </td>
+                    <td>{{ log.descricao }}</td>
+                    <td style="font-family: monospace; font-size: 0.875rem;">
+                        {{ log.ip_address|default:"N/A" }}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" style="text-align: center; color: #666; padding: 2rem;">
+                        Nenhum log encontrado para este usuário
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Paginação -->
+    {% if page_obj.has_other_pages %}
+    <div style="display: flex; justify-content: center; align-items: center; gap: 0.5rem; margin-top: 2rem;">
+        {% if page_obj.has_previous %}
+            <a href="?page=1" class="btn">Primeira</a>
+            <a href="?page={{ page_obj.previous_page_number }}" class="btn">Anterior</a>
+        {% endif %}
+
+        <span style="padding: 0.5rem 1rem;">
+            Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="btn">Próxima</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}" class="btn">Última</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

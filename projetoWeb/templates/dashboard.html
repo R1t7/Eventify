@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Eventify{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1 style="color: var(--primary-color);">Dashboard</h1>
+    <p style="color: #666;">Bem-vindo ao Sistema de Gestão de Eventos Acadêmicos, {{ user.nome }}!</p>
+</div>
+
+<div class="dashboard-grid">
+    <div class="stat-card">
+        <div class="stat-number">{{ total_eventos }}</div>
+        <div class="stat-label">Total de Eventos</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ eventos_abertos }}</div>
+        <div class="stat-label">Eventos Abertos</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ minhas_inscricoes_count }}</div>
+        <div class="stat-label">Minhas Inscrições</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ meus_certificados_count }}</div>
+        <div class="stat-label">Certificados</div>
+    </div>
+</div>
+
+<div class="card" style="margin-top: 2rem;">
+    <h2 style="color: var(--primary-color); margin-bottom: 1rem;">Próximos Eventos</h2>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Evento</th>
+                    <th>Tipo</th>
+                    <th>Data</th>
+                    <th>Local</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for evento in proximos_eventos %}
+                <tr>
+                    <td>{{ evento.titulo }}</td>
+                    <td><span class="event-type">{{ evento.get_tipo_display }}</span></td>
+                    <td>{{ evento.data_inicio|date:"d/m/Y" }}</td>
+                    <td>{{ evento.local }}</td>
+                    <td><a href="{% url 'detalhes_evento' evento.id %}" class="btn btn-primary">Ver Detalhes</a></td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" style="text-align: center; color: #666;">Nenhum evento disponível no momento</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

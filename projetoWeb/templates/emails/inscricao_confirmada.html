@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscrição Confirmada - Eventify</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        .logo {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        .content {
+            padding: 40px 30px;
+            color: #333333;
+            line-height: 1.6;
+        }
+        .success-icon {
+            text-align: center;
+            font-size: 60px;
+            color: #27ae60;
+            margin: 20px 0;
+        }
+        .event-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .event-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .event-details {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .event-detail-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .footer {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #666666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">📚</div>
+            <h1 style="margin: 0;">Eventify</h1>
+            <p>Sistema de Gestão de Eventos Acadêmicos</p>
+        </div>
+
+        <div class="content">
+            <div class="success-icon">✅</div>
+
+            <h2 style="text-align: center; color: #27ae60;">Inscrição Confirmada!</h2>
+
+            <p>Olá, <strong>{{ nome_completo }}</strong>!</p>
+
+            <p>Sua inscrição foi confirmada com sucesso! Veja os detalhes do evento:</p>
+
+            <div class="event-box">
+                <div class="event-title">{{ evento.titulo }}</div>
+                <div class="event-details">
+                    <div class="event-detail-item">
+                        <span>📅</span>
+                        <span><strong>Data:</strong> {{ evento.data_inicio|date:"d/m/Y" }} {% if evento.data_inicio != evento.data_fim %}a {{ evento.data_fim|date:"d/m/Y" }}{% endif %}</span>
+                    </div>
+                    <div class="event-detail-item">
+                        <span>⏰</span>
+                        <span><strong>Horário:</strong> {{ evento.horario }}</span>
+                    </div>
+                    <div class="event-detail-item">
+                        <span>📍</span>
+                        <span><strong>Local:</strong> {{ evento.local }}</span>
+                    </div>
+                    <div class="event-detail-item">
+                        <span>🎯</span>
+                        <span><strong>Tipo:</strong> {{ evento.get_tipo_display }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <p><strong>Informações importantes:</strong></p>
+            <ul>
+                <li>Chegue com pelo menos 15 minutos de antecedência</li>
+                <li>Traga um documento com foto para identificação</li>
+                <li>A lista de presença será disponibilizada no local do evento</li>
+                <li>Após o evento, seu certificado será gerado automaticamente</li>
+            </ul>
+
+            <p>Você pode gerenciar suas inscrições acessando o sistema: <a href="{{ base_url }}">{{ base_url }}</a></p>
+
+            <p>Nos vemos no evento!</p>
+
+            <p>Atenciosamente,<br>
+            <strong>Equipe Eventify</strong></p>
+        </div>
+
+        <div class="footer">
+            <p>Este é um email automático, por favor não responda.</p>
+            <p>&copy; 2025 Eventify - Sistema de Gestão de Eventos Acadêmicos</p>
+        </div>
+    </div>
+</body>
+</html>

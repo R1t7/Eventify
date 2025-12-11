@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - Eventify</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="card" style="max-width: 600px; margin: 50px auto;">
+            <h2 style="color: var(--primary-color); margin-bottom: 1.5rem;">Cadastro de Usuário</h2>
+
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="username">Usuário</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="first_name">Nome</label>
+                    <input type="text" class="form-control" id="first_name" name="first_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="last_name">Sobrenome</label>
+                    <input type="text" class="form-control" id="last_name" name="last_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="telefone">Telefone</label>
+                    <input type="tel" class="form-control" id="telefone" name="telefone" placeholder="(00) 00000-0000" required>
+                </div>
+                <div class="form-group">
+                    <label for="instituicao_ensino">Instituição de Ensino</label>
+                    <input type="text" class="form-control" id="instituicao_ensino" name="instituicao_ensino" required>
+                </div>
+                <div class="form-group">
+                    <label for="perfil">Perfil</label>
+                    <select class="form-control" id="perfil" name="perfil" required>
+                        <option value="">Selecione...</option>
+                        <option value="ALUNO">Aluno</option>
+                        <option value="PROFESSOR">Professor</option>
+                        <option value="ORGANIZADOR">Organizador</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="password1">Senha</label>
+                    <input type="password" class="form-control" id="password1" name="password1" required>
+                </div>
+                <div class="form-group">
+                    <label for="password2">Confirmar Senha</label>
+                    <input type="password" class="form-control" id="password2" name="password2" required>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <button type="submit" class="btn btn-primary">Cadastrar</button>
+                    <a href="{% url 'login' %}" class="btn btn-outline">Voltar ao Login</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

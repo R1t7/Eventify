@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmação de Cadastro - Eventify</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        .logo {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .content {
+            padding: 40px 30px;
+            color: #333333;
+            line-height: 1.6;
+        }
+        .welcome {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        .button {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 15px 40px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .code-box {
+            background-color: #f8f9fa;
+            border: 2px dashed #667eea;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .code {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+        }
+        .footer {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #666666;
+            font-size: 14px;
+        }
+        .info-box {
+            background-color: #e7f3ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">📚 Eventify</div>
+            <p>Sistema de Gestão de Eventos Acadêmicos</p>
+        </div>
+
+        <div class="content">
+            <p class="welcome">Bem-vindo(a), {{ nome_completo }}!</p>
+
+            <p>Seu cadastro foi realizado com sucesso no Eventify - Sistema de Gestão de Eventos Acadêmicos!</p>
+
+            <p>Para ativar sua conta e começar a utilizar todas as funcionalidades do sistema, você precisa confirmar seu endereço de email.</p>
+
+            <div class="info-box">
+                <strong>Seus dados de acesso:</strong><br>
+                <strong>Usuário:</strong> {{ usuario.username }}<br>
+                <strong>Email:</strong> {{ usuario.email }}<br>
+                <strong>Perfil:</strong> {{ usuario.get_perfil_display }}
+            </div>
+
+            <p><strong>Opção 1:</strong> Clique no botão abaixo para confirmar sua conta:</p>
+
+            <div style="text-align: center;">
+                <a href="{{ url_confirmacao }}" class="button">Confirmar Minha Conta</a>
+            </div>
+
+            <p><strong>Opção 2:</strong> Use o código de confirmação abaixo:</p>
+
+            <div class="code-box">
+                <p style="margin: 0; color: #666; font-size: 14px;">Código de Confirmação:</p>
+                <p class="code">{{ codigo_confirmacao }}</p>
+            </div>
+
+            <div class="info-box">
+                <strong>ℹ️ Importante:</strong><br>
+                Por questões de segurança, você só poderá acessar o sistema após confirmar seu email.
+            </div>
+
+            <p>Se você não solicitou este cadastro, por favor ignore este email.</p>
+
+            <p>Atenciosamente,<br>
+            <strong>Equipe Eventify</strong></p>
+        </div>
+
+        <div class="footer">
+            <p>Este é um email automático, por favor não responda.</p>
+            <p>&copy; 2025 Eventify - Sistema de Gestão de Eventos Acadêmicos</p>
+            <p>{{ base_url }}</p>
+        </div>
+    </div>
+</body>
+</html>

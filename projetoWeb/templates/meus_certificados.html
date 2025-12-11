@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}Meus Certificados - Eventify{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1 style="color: var(--primary-color);">Meus Certificados</h1>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Evento</th>
+                    <th>Tipo</th>
+                    <th>Data do Evento</th>
+                    <th>Data de Emissão</th>
+                    <th>Código de Validação</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for certificado in certificados %}
+                <tr>
+                    <td>{{ certificado.inscricao.evento.titulo }}</td>
+                    <td>{{ certificado.inscricao.evento.get_tipo_display }}</td>
+                    <td>
+                        {{ certificado.inscricao.evento.data_inicio|date:"d/m/Y" }}
+                        {% if certificado.inscricao.evento.data_fim and certificado.inscricao.evento.data_fim != certificado.inscricao.evento.data_inicio %}
+                         - {{ certificado.inscricao.evento.data_fim|date:"d/m/Y" }}
+                        {% endif %}
+                    </td>
+                    <td>{{ certificado.data_emissao|date:"d/m/Y" }}</td>
+                    <td><code>{{ certificado.codigo_validacao }}</code></td>
+                    <td>
+                        <a href="{% url 'visualizar_certificado' certificado.id %}" class="btn btn-primary" target="_blank">Visualizar</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" style="text-align: center; color: #666;">Você ainda não possui certificados</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Certificate Validation -->
+<div class="card">
+    <h2 style="color: var(--primary-color);">Validar Certificado</h2>
+    <form method="post" action="{% url 'validar_certificado' %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="codigo">Código de Validação</label>
+            <input type="text" class="form-control" id="codigo" name="codigo" placeholder="Digite o código do certificado">
+        </div>
+        <button type="submit" class="btn btn-primary">Validar</button>
+    </form>
+</div>
+{% endblock %}

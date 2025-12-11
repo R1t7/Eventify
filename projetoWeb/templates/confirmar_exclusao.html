@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Confirmar Exclusão - Eventify{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 600px; margin-top: 50px;">
+    <div class="card">
+        <div class="card-header bg-danger text-white">
+            <h3 class="mb-0">⚠️ Confirmar Exclusão</h3>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-warning">
+                <strong>Atenção!</strong> Esta ação não pode ser desfeita.
+            </div>
+
+            <h4>Você tem certeza que deseja excluir este evento?</h4>
+
+            <div class="evento-info" style="background-color: #f8f9fa; padding: 20px; border-radius: 5px; margin: 20px 0;">
+                <h5 style="color: #2c3e50; margin-bottom: 15px;">{{ evento.titulo }}</h5>
+                <p><strong>Tipo:</strong> {{ evento.get_tipo_display }}</p>
+                <p><strong>Data:</strong> {{ evento.data_inicio|date:"d/m/Y" }}
+                   {% if evento.data_inicio != evento.data_fim %}
+                   a {{ evento.data_fim|date:"d/m/Y" }}
+                   {% endif %}
+                </p>
+                <p><strong>Local:</strong> {{ evento.local }}</p>
+                <p><strong>Vagas:</strong> {{ evento.vagas }}</p>
+                <p><strong>Inscritos:</strong> {{ evento.inscricoes.count }}</p>
+            </div>
+
+            {% if evento.inscricoes.count > 0 %}
+            <div class="alert alert-danger">
+                <strong>⚠️ Importante:</strong> Este evento possui {{ evento.inscricoes.count }} inscrição(ões).
+                Ao excluir o evento, todas as inscrições também serão removidas.
+            </div>
+            {% endif %}
+
+            <form method="post" style="margin-top: 30px;">
+                {% csrf_token %}
+                <div class="d-flex justify-content-between">
+                    <a href="{% url 'detalhes_evento' evento.pk %}" class="btn btn-secondary">
+                        ← Cancelar
+                    </a>
+                    <button type="submit" class="btn btn-danger">
+                        🗑️ Sim, Excluir Evento
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

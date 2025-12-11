@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ evento.titulo }} - Eventify{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1 style="color: var(--primary-color);">{{ evento.titulo }}</h1>
+    <span class="event-type">{{ evento.get_tipo_display }}</span>
+
+    {% if evento.banner %}
+    <div style="margin-top: 2rem;">
+        <img src="{{ evento.banner.url }}" alt="Banner do evento {{ evento.titulo }}" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+    </div>
+    {% endif %}
+
+    <div style="margin-top: 2rem;">
+        <h3>Descrição</h3>
+        <p>{{ evento.descricao }}</p>
+    </div>
+
+    <div style="margin-top: 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+        <div>
+            <strong>Data de Início:</strong> {{ evento.data_inicio|date:"d/m/Y" }}
+        </div>
+        {% if evento.data_fim %}
+        <div>
+            <strong>Data de Término:</strong> {{ evento.data_fim|date:"d/m/Y" }}
+        </div>
+        {% endif %}
+        <div>
+            <strong>Horário:</strong> {{ evento.horario }}
+        </div>
+        <div>
+            <strong>Local:</strong> {{ evento.local }}
+        </div>
+        <div>
+            <strong>Vagas Totais:</strong> {{ evento.vagas }}
+        </div>
+        <div>
+            <strong>Vagas Disponíveis:</strong> {{ evento.vagas_disponiveis }}
+        </div>
+    </div>
+
+    <div style="margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+        {% if user.perfil == 'ORGANIZADOR' or evento.organizador == user %}
+            <!-- Botões para organizadores -->
+            <a href="{% url 'editar_evento' evento.id %}" class="btn btn-primary">Editar Evento</a>
+            <a href="{% url 'excluir_evento' evento.id %}" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja excluir este evento?')">Excluir Evento</a>
+        {% else %}
+            <!-- Botões para alunos e professores -->
+            {% if evento.vagas_disponiveis > 0 and evento.status == 'ABERTO' %}
+                {% if inscrito %}
+                    <button class="btn btn-success" disabled>Já Inscrito</button>
+                {% else %}
+                    <a href="{% url 'inscrever_evento' evento.id %}" class="btn btn-success">Inscrever-se no Evento</a>
+                {% endif %}
+            {% else %}
+                <button class="btn btn-primary" disabled>Inscrições Encerradas</button>
+            {% endif %}
+        {% endif %}
+
+        <a href="{% url 'listar_eventos' %}" class="btn btn-outline">Voltar</a>
+    </div>
+</div>
+
+<!-- Lista de Inscritos (apenas para organizadores) -->
+{% if user.perfil == 'ORGANIZADOR' or evento.organizador == user %}
+<div class="card">
+    <h2 style="color: var(--primary-color);">Participantes Inscritos ({{ inscricoes.count }})</h2>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Instituição</th>
+                    <th>Data de Inscrição</th>
+                    <th>Presença</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for inscricao in inscricoes %}
+                <tr>
+                    <td>{{ inscricao.usuario.get_full_name }}</td>
+                    <td>{{ inscricao.usuario.email }}</td>
+                    <td>{{ inscricao.usuario.instituicao_ensino }}</td>
+                    <td>{{ inscricao.data_inscricao|date:"d/m/Y H:i" }}</td>
+                    <td style="text-align: center;">
+                        {% if inscricao.presenca_confirmada %}
+                            <span style="color: green; font-weight: bold;">✓ Confirmada</span>
+                        {% else %}
+                            <span style="color: #999;">✗ Não confirmada</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if inscricao.status == 'CONFIRMADA' %}
+                            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                                {% if not inscricao.presenca_confirmada %}
+                                    <a href="{% url 'confirmar_presenca' inscricao.id %}" class="btn btn-success" style="font-size: 0.875rem; padding: 0.5rem 1rem;">Confirmar Presença</a>
+                                {% else %}
+                                    <a href="{% url 'remover_presenca' inscricao.id %}" class="btn" style="font-size: 0.875rem; padding: 0.5rem 1rem; background: #dc3545; color: white;">Remover Presença</a>
+                                {% endif %}
+
+                                {% if inscricao.presenca_confirmada %}
+                                    <a href="{% url 'emitir_certificado' inscricao.id %}" class="btn btn-primary" style="font-size: 0.875rem; padding: 0.5rem 1rem;">Emitir Certificado</a>
+                                {% endif %}
+                            </div>
+                        {% else %}
+                            <span style="color: #999;">{{ inscricao.get_status_display }}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" style="text-align: center; color: #666;">Nenhum participante inscrito</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if inscricoes %}
+    <div style="margin-top: 1rem; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+        <p style="margin: 0; color: #666;">
+            <strong>ℹ️ Importante:</strong> Confirme a presença dos participantes que compareceram ao evento.
+            Após a data de término, o sistema gerará automaticamente os certificados para quem teve presença confirmada.
+        </p>
+    </div>
+    {% endif %}
+</div>
+{% endif %}
+{% endblock %}

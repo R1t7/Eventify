@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Minhas Inscrições - Eventify{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1 style="color: var(--primary-color);">Minhas Inscrições</h1>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Evento</th>
+                    <th>Tipo</th>
+                    <th>Data</th>
+                    <th>Local</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for inscricao in inscricoes %}
+                <tr>
+                    <td>{{ inscricao.evento.titulo }}</td>
+                    <td>{{ inscricao.evento.get_tipo_display }}</td>
+                    <td>
+                        {{ inscricao.evento.data_inicio|date:"d/m/Y" }}
+                        {% if inscricao.evento.data_fim and inscricao.evento.data_fim != inscricao.evento.data_inicio %}
+                         - {{ inscricao.evento.data_fim|date:"d/m/Y" }}
+                        {% endif %}
+                    </td>
+                    <td>{{ inscricao.evento.local }}</td>
+                    <td>
+                        <span style="color: {% if inscricao.status == 'CONFIRMADA' %}var(--success-color){% elif inscricao.status == 'CANCELADA' %}var(--danger-color){% else %}var(--warning-color){% endif %};">
+                            {{ inscricao.get_status_display }}
+                        </span>
+                    </td>
+                    <td>
+                        {% if inscricao.status == 'CONFIRMADA' %}
+                        <form method="post" action="{% url 'cancelar_inscricao' inscricao.id %}" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja cancelar esta inscrição?')">Cancelar Inscrição</button>
+                        </form>
+                        {% else %}
+                        -
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" style="text-align: center; color: #666;">Você ainda não possui inscrições</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

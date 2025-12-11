@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificado - {{ certificado.inscricao.evento.titulo }}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        body {
+            background: #f5f5f5;
+            padding: 2rem;
+        }
+        .no-print {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        @media print {
+            .no-print {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="no-print">
+        <button onclick="window.print()" class="btn btn-primary">Imprimir Certificado</button>
+        <a href="{% url 'meus_certificados' %}" class="btn btn-outline">Voltar</a>
+    </div>
+
+    <div class="certificate">
+        <h1>CERTIFICADO</h1>
+        <div class="certificate-content">
+            <p>Certificamos que</p>
+            <h2 style="color: var(--primary-color); margin: 1rem 0;">{{ certificado.inscricao.usuario.nome }}</h2>
+            <p>participou do evento</p>
+            <h3 style="color: var(--secondary-color); margin: 1rem 0;">{{ certificado.inscricao.evento.titulo }}</h3>
+            <p>realizado
+                {% if certificado.inscricao.evento.data_fim and certificado.inscricao.evento.data_fim != certificado.inscricao.evento.data_inicio %}
+                de {{ certificado.inscricao.evento.data_inicio|date:"d/m/Y" }} a {{ certificado.inscricao.evento.data_fim|date:"d/m/Y" }}
+                {% else %}
+                em {{ certificado.inscricao.evento.data_inicio|date:"d/m/Y" }}
+                {% endif %}
+            </p>
+            <p>Local: {{ certificado.inscricao.evento.local }}</p>
+        </div>
+        <div class="certificate-footer">
+            <div>
+                <div class="signature-line">Organizador</div>
+            </div>
+            <div>
+                <div class="signature-line">Coordenação</div>
+            </div>
+        </div>
+        <div style="margin-top: 2rem; font-size: 0.875rem;">
+            <p>Código de Validação: {{ certificado.codigo_validacao }}</p>
+            <p>Emitido em: {{ certificado.data_emissao|date:"d/m/Y" }}</p>
+        </div>
+    </div>
+</body>
+</html>
