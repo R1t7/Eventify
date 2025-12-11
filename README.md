@@ -586,8 +586,7 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 **Victor Rithelly**
 
 - 🔗 GitHub: [@R1t7](https://github.com/R1t7)
-- [Eventify](https://github.com/R1t7/Eventify)
-- 📦 Repositório: [Projeto_Web](https://github.com/R1t7/Projeto_Web)
+- 📦 Repositório: [Eventify](https://github.com/R1t7/Eventify)
 
 ---
 
