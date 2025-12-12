@@ -138,16 +138,16 @@ python manage.py runserver
 Use uma das contas de teste ou crie uma nova conta:
 
 **Organizador:**
-- Login: `org_admin`
-- Senha: `senha123`
+- Login: `organizador@sgea.com`
+- Senha: `Admin@123`
 
 **Professor:**
-- Login: `prof_carlos`
-- Senha: `senha123`
+- Login: `professor@sgea.com`
+- Senha: `Professor@123`
 
 **Aluno:**
-- Login: `aluno_lucas`
-- Senha: `senha123`
+- Login: `aluno@sgea.com`
+- Senha: `Aluno@123`
 
 ### Como Organizador
 
